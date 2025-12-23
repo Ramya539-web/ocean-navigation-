@@ -1,0 +1,9 @@
+@Test
+void shouldStopAtBoundary() {
+    OceanFloor ocean = new OceanFloor(3,3, Set.of());
+    Navigator nav = new Navigator(2,2, Direction.NORTH, ocean);
+
+    MovementResult result = nav.navigate(new CommandSequence("F"));
+
+    assertEquals(MovementResult.Status.OUT_OF_BOUNDS, result.status());
+}
