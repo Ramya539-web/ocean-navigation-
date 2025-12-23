@@ -1,0 +1,61 @@
+package navigation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Navigator {
+
+    private int x;
+    private int y;
+    private Direction direction;
+    private final OceanFloor ocean;
+    private final List<String> visited = new ArrayList<>();
+
+    public Navigator(int x, int y, Direction direction, OceanFloor ocean) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.ocean = ocean;
+        visited.add(x + "," + y);
+    }
+
+    public MovementResult navigate(CommandSequence sequence) {
+
+        for (char command : sequence.commands()) {
+
+            if (command == 'L') direction = direction.left();
+            else if (command == 'R') direction = direction.right();
+            else {
+                int nextX = x;
+                int nextY = y;
+
+                switch (direction) {
+                    case NORTH -> nextY++;
+                    case SOUTH -> nextY--;
+                    case EAST  -> nextX++;
+                    case WEST  -> nextX--;
+                }
+
+                if (!ocean.isWithinBounds(nextX, nextY)) {
+                    return result(MovementResult.Status.OUT_OF_BOUNDS,
+                            "Movement stopped at boundary");
+                }
+
+                if (ocean.hasObstacle(nextX, nextY)) {
+                    return result(MovementResult.Status.BLOCKED_BY_OBSTACLE,
+                            "Obstacle detected");
+                }
+
+                x = nextX;
+                y = nextY;
+                visited.add(x + "," + y);
+            }
+        }
+
+        return result(MovementResult.Status.SUCCESS, "Navigation completed");
+    }
+
+    private MovementResult result(MovementResult.Status status, String message) {
+        return new MovementResult(x, y, direction, visited, status, message);
+    }
+}
