@@ -1,0 +1,9 @@
+@Test
+void shouldStopAtObstacle() {
+    OceanFloor ocean = new OceanFloor(5,5, Set.of("2,2"));
+    Navigator nav = new Navigator(2,1, Direction.NORTH, ocean);
+
+    MovementResult result = nav.navigate(new CommandSequence("F"));
+
+    assertEquals(MovementResult.Status.BLOCKED_BY_OBSTACLE, result.status());
+}
