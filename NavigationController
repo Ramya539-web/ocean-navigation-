@@ -1,0 +1,32 @@
+package api;
+
+import navigation.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
+
+@RestController
+@RequestMapping("/navigate")
+public class NavigationController {
+
+    @PostMapping
+    public MovementResult navigate(@RequestBody NavigationRequest request) {
+
+        OceanFloor ocean = new OceanFloor(
+                10,
+                10,
+                Set.of("3,3", "5,5")
+        );
+
+        Navigator navigator = new Navigator(
+                request.startX(),
+                request.startY(),
+                request.direction(),
+                ocean
+        );
+
+        return navigator.navigate(
+                new CommandSequence(request.commands())
+        );
+    }
+}
