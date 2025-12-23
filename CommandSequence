@@ -1,0 +1,18 @@
+package navigation;
+
+import java.util.List;
+
+public class CommandSequence {
+
+    private final List<Character> commands;
+
+    public CommandSequence(String input) {
+        this.commands = input.chars()
+                .mapToObj(c -> (char) c)
+                .toList();
+    }
+
+    public List<Character> commands() {
+        return commands;
+    }
+}
