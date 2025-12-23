@@ -1,0 +1,18 @@
+package navigation;
+
+import java.util.List;
+
+public record MovementResult(
+        int x,
+        int y,
+        Direction direction,
+        List<String> visited,
+        Status status,
+        String message
+) {
+    public enum Status {
+        SUCCESS,
+        BLOCKED_BY_OBSTACLE,
+        OUT_OF_BOUNDS
+    }
+}
